@@ -252,7 +252,7 @@
         <div class="currency-head">
           <div>
             <h2>旅行汇率换算</h2>
-            <p>MYR／SGD 转换为 EUR／CHF。使用制作页面时的市场中间价作为旅行预算参考。</p>
+            <p>MYR／SGD／EUR／CHF 四种货币可互相换算。使用制作页面时的市场中间价作为旅行预算参考。</p>
           </div>
           <div class="rate-stamp" id="rateStamp">参考日期：2026-08-03</div>
         </div>
@@ -265,12 +265,12 @@
               </div>
               <div class="fx-field">
                 <label for="fxFrom">从</label>
-                <select class="fx-select" id="fxFrom"><option value="MYR">MYR · 马币</option><option value="SGD">SGD · 新币</option></select>
+                <select class="fx-select" id="fxFrom"><option value="MYR">MYR · 马币</option><option value="SGD">SGD · 新币</option><option value="EUR">EUR · 欧元</option><option value="CHF">CHF · 瑞郎</option></select>
               </div>
               <div class="swap-mark" aria-hidden="true">→</div>
               <div class="fx-field">
                 <label for="fxTo">换成</label>
-                <select class="fx-select" id="fxTo"><option value="EUR">EUR · 欧元</option><option value="CHF">CHF · 瑞郎</option></select>
+                <select class="fx-select" id="fxTo"><option value="MYR">MYR · 马币</option><option value="SGD">SGD · 新币</option><option value="EUR" selected>EUR · 欧元</option><option value="CHF">CHF · 瑞郎</option></select>
               </div>
             </div>
             <div class="quick-amounts" aria-label="快速金额">
@@ -315,7 +315,7 @@ function renderStats() {
   $('#stats').innerHTML = entries.map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
 }
 function renderNav() {
-  const currency = `<button class="nav-item" data-target="currency"><span class="flag">💱</span><span><b>汇率换算</b><small>MYR／SGD → EUR／CHF</small></span></button>`;
+  const currency = `<button class="nav-item" data-target="currency"><span class="flag">💱</span><span><b>汇率换算</b><small>MYR／SGD／EUR／CHF</small></span></button>`;
   $('#sideNav').innerHTML = currency + DATA.countries.map(c=>`<button class="nav-item" data-target="${c.id}"><span class="flag">${c.flag}</span><span><b>${c.name}</b><small>${c.date}</small></span></button>`).join('');
 }
 function timeline(items, accent) {
@@ -351,11 +351,20 @@ const DEFAULT_RATES = Object.freeze({
   SGD_EUR: 0.6804,
   SGD_CHF: 0.6337
 });
+function getRate(from, to) {
+  if(from === to) return 1;
+  const direct = DEFAULT_RATES[`${from}_${to}`];
+  if(direct) return direct;
+  const inverse = DEFAULT_RATES[`${to}_${from}`];
+  if(inverse) return 1 / inverse;
+  const bridge = from === 'EUR' || to === 'EUR' ? 'MYR' : 'EUR';
+  return getRate(from, bridge) * getRate(bridge, to);
+}
 function calculateFx() {
   const amount = Math.max(0, Number($('#fxAmount').value) || 0);
   const from = $('#fxFrom').value;
   const to = $('#fxTo').value;
-  const rate = DEFAULT_RATES[`${from}_${to}`];
+  const rate = getRate(from, to);
   const converted = amount * rate;
   $('#fxResult').textContent = new Intl.NumberFormat('en-US', {style:'currency', currency:to, minimumFractionDigits:2, maximumFractionDigits:2}).format(converted);
   const inverse = rate > 0 ? 1 / rate : 0;
