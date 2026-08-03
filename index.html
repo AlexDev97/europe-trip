@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#10221b" />
+  <title>欧洲旅行行程｜2026</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --surface: rgba(255,255,255,.86);
+      --surface-solid: #ffffff;
+      --text: #17211d;
+      --muted: #6c746f;
+      --line: rgba(23,33,29,.12);
+      --accent: #1f6d50;
+      --accent-2: #d9895b;
+      --shadow: 0 18px 50px rgba(29,48,39,.10);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --sidebar: 290px;
+    }
+    html[data-theme="dark"] {
+      --bg: #101713;
+      --surface: rgba(26,36,31,.88);
+      --surface-solid: #1a241f;
+      --text: #f0f4f1;
+      --muted: #a8b2ac;
+      --line: rgba(255,255,255,.12);
+      --accent: #79d3a9;
+      --accent-2: #f2ad7a;
+      --shadow: 0 18px 60px rgba(0,0,0,.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(93,149,116,.16), transparent 30%),
+        radial-gradient(circle at 100% 12%, rgba(220,142,94,.14), transparent 28%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; }
+    .app { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); min-height: 100vh; }
+    .sidebar {
+      position: sticky; top: 0; height: 100vh; padding: 26px 20px;
+      border-right: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 72%, transparent);
+      backdrop-filter: blur(18px); z-index: 20; overflow-y: auto;
+    }
+    .brand { display: flex; align-items: center; gap: 13px; margin-bottom: 26px; }
+    .brand-mark { width: 44px; height: 44px; border-radius: 14px; display:grid; place-items:center; background: var(--text); color: var(--bg); font-size: 21px; box-shadow: var(--shadow); }
+    .brand strong { display:block; font-size: 16px; letter-spacing: -.02em; }
+    .brand span { font-size: 12px; color: var(--muted); }
+    .side-search { position: relative; margin-bottom: 16px; }
+    .side-search input { width:100%; height:44px; border-radius: 14px; border:1px solid var(--line); background:var(--surface); color:var(--text); padding:0 14px 0 40px; outline:none; }
+    .side-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); }
+    .side-search span { position:absolute; left:14px; top:11px; color:var(--muted); }
+    .side-title { margin: 22px 8px 8px; font-size: 11px; text-transform: uppercase; letter-spacing:.14em; color:var(--muted); font-weight:700; }
+    .nav-list { display:flex; flex-direction:column; gap:6px; }
+    .nav-item { width:100%; border:0; background:transparent; display:flex; align-items:center; gap:11px; padding:11px 12px; border-radius:13px; cursor:pointer; text-align:left; transition:.2s ease; }
+    .nav-item:hover, .nav-item.active { background: var(--surface); box-shadow: 0 8px 24px rgba(21,44,33,.06); }
+    .nav-item .flag { font-size:19px; }
+    .nav-item b { font-size:14px; }
+    .nav-item small { display:block; color:var(--muted); font-size:11px; margin-top:2px; }
+    .side-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:18px; }
+    .icon-btn { min-height:42px; border:1px solid var(--line); background:var(--surface); border-radius:13px; cursor:pointer; padding:0 12px; transition:.2s; }
+    .icon-btn:hover { transform:translateY(-1px); box-shadow:var(--shadow); }
+    .side-footer { margin-top:22px; padding:14px; border:1px solid var(--line); border-radius:16px; color:var(--muted); font-size:12px; line-height:1.55; background:var(--surface); }
+    .main { min-width:0; padding: 30px clamp(20px, 4vw, 64px) 80px; }
+    .mobile-header { display:none; }
+    .mobile-tools { display:none; }
+    .mobile-tool-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .hero {
+      position:relative; overflow:hidden; min-height:360px; border-radius:var(--radius-xl); padding:clamp(28px,5vw,62px);
+      background: linear-gradient(135deg, #12382b 0%, #1e5c45 58%, #8e5c3c 130%); color:#fff; box-shadow:var(--shadow);
+      display:flex; flex-direction:column; justify-content:flex-end;
+    }
+    .hero:before { content:""; position:absolute; inset:-60% -10% auto 45%; width:420px; height:420px; border-radius:50%; border:1px solid rgba(255,255,255,.18); box-shadow:0 0 0 60px rgba(255,255,255,.04), 0 0 0 120px rgba(255,255,255,.025); }
+    .hero:after { content:"AMS  ·  BRU  ·  MUC  ·  ZRH  ·  PAR"; position:absolute; right:-5px; bottom:22px; font-size:clamp(28px,5vw,72px); font-weight:800; letter-spacing:.08em; color:rgba(255,255,255,.055); white-space:nowrap; }
+    .hero-content { position:relative; z-index:2; max-width:820px; }
+    .hero h1 { margin:0; font-size:clamp(40px,6vw,78px); line-height:.97; letter-spacing:-.055em; max-width:760px; }
+    .hero p { margin:20px 0 0; max-width:620px; color:rgba(255,255,255,.76); font-size:clamp(15px,1.8vw,19px); line-height:1.7; }
+    .hero-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+    .hero-meta span { padding:10px 13px; border-radius:999px; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.14); backdrop-filter:blur(8px); font-size:13px; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+    .primary, .secondary { border:0; border-radius:14px; padding:12px 16px; cursor:pointer; font-weight:700; transition:.2s; }
+    .primary { background:#fff; color:#17362b; }
+    .secondary { background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.18); }
+    .primary:hover, .secondary:hover { transform:translateY(-1px); }
+    .stats { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; margin:18px 0 36px; }
+    .stat { padding:18px; border:1px solid var(--line); background:var(--surface); border-radius:var(--radius-lg); box-shadow:0 10px 30px rgba(20,45,33,.04); }
+    .stat b { display:block; font-size:26px; letter-spacing:-.04em; }
+    .stat span { color:var(--muted); font-size:12px; }
+    .section { margin-top:46px; scroll-margin-top:26px; }
+    .section-head { display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; margin-bottom:18px; }
+    .country-flag { width:52px; height:52px; display:grid; place-items:center; border-radius:17px; background:var(--surface); border:1px solid var(--line); font-size:27px; box-shadow:0 10px 30px rgba(20,45,33,.06); }
+    .section-head h2 { margin:0; font-size:clamp(27px,4vw,46px); letter-spacing:-.04em; }
+    .section-head p { margin:6px 0 0; color:var(--muted); line-height:1.6; }
+    .hotel-chip { align-self:start; padding:9px 12px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:12px; background:var(--surface); }
+    .route-strip { display:flex; gap:8px; overflow:auto; padding:2px 0 13px; scrollbar-width:thin; }
+    .route-strip button { flex:0 0 auto; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:9px 12px; cursor:pointer; font-size:12px; }
+    .day-list { display:flex; flex-direction:column; gap:14px; }
+    .day-card { border:1px solid var(--line); background:var(--surface); border-radius:var(--radius-lg); overflow:hidden; box-shadow:0 12px 38px rgba(18,42,31,.045); transition:.25s; }
+    .day-card:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+    .day-card[hidden] { display:none; }
+    .day-toggle { width:100%; border:0; background:transparent; cursor:pointer; padding:20px 22px; display:grid; grid-template-columns:122px minmax(0,1fr) auto; gap:18px; align-items:center; text-align:left; }
+    .date-block b { font-size:14px; }
+    .date-block small { display:block; margin-top:5px; color:var(--muted); }
+    .day-title { min-width:0; }
+    .day-title h3 { margin:0; font-size:18px; letter-spacing:-.02em; }
+    .day-title p { margin:6px 0 0; color:var(--muted); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .chevron { width:34px; height:34px; display:grid; place-items:center; border:1px solid var(--line); border-radius:50%; transition:.25s; }
+    .day-card.open .chevron { transform:rotate(180deg); background:var(--text); color:var(--bg); }
+    .day-content { display:none; padding:0 22px 22px; }
+    .day-card.open .day-content { display:block; animation:reveal .22s ease; }
+    @keyframes reveal { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+    .timeline { position:relative; margin-top:4px; }
+    .timeline:before { content:""; position:absolute; left:119px; top:14px; bottom:14px; width:1px; background:var(--line); }
+    .timeline-row { display:grid; grid-template-columns:98px 22px minmax(0,1fr); gap:10px; min-height:44px; align-items:start; padding:7px 0; }
+    .time { text-align:right; color:var(--muted); font-size:12px; padding-top:3px; }
+    .dot { width:10px; height:10px; border-radius:50%; margin:5px auto 0; background:var(--country-accent, var(--accent)); box-shadow:0 0 0 5px color-mix(in srgb, var(--country-accent, var(--accent)) 14%, transparent); position:relative; z-index:2; }
+    .activity { line-height:1.55; font-size:14px; }
+    .notes { margin-top:14px; display:grid; gap:8px; }
+    .note { padding:12px 14px; border-radius:14px; background:color-mix(in srgb, var(--country-accent, var(--accent)) 8%, var(--surface-solid)); border:1px solid color-mix(in srgb, var(--country-accent, var(--accent)) 18%, var(--line)); font-size:13px; line-height:1.55; }
+    .variant { margin-top:12px; padding:16px; border:1px dashed var(--line); border-radius:18px; }
+    .variant h4 { margin:0 0 8px; font-size:15px; }
+    .bookings { margin-top:52px; border-radius:var(--radius-xl); background:var(--text); color:var(--bg); padding:clamp(24px,4vw,40px); }
+    .bookings h2 { margin:0 0 8px; font-size:clamp(26px,3.2vw,42px); letter-spacing:-.04em; }
+    .bookings > p { margin:0 0 22px; opacity:.66; }
+    .booking-grid { display:grid; gap:10px; }
+    .booking-row { display:grid; grid-template-columns:100px minmax(0,1fr) 70px; gap:12px; align-items:center; padding:14px 0; border-top:1px solid rgba(255,255,255,.13); }
+    .booking-row .priority { justify-self:end; font-size:11px; padding:5px 9px; border-radius:999px; background:rgba(255,255,255,.12); }
+    .empty { display:none; padding:48px 20px; text-align:center; color:var(--muted); }
+    .empty.show { display:block; }
+    .fab { display:none; position:fixed; right:18px; bottom:18px; z-index:30; width:52px; height:52px; border:0; border-radius:50%; background:var(--text); color:var(--bg); box-shadow:var(--shadow); }
+    .highlight { background: #ffef8a; color:#222; padding:0 .12em; border-radius:3px; }
+    @media (max-width: 980px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar { display:none; }
+      .mobile-header { display:flex; position:sticky; top:0; z-index:40; justify-content:space-between; align-items:center; padding:12px 16px; background:color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter:blur(18px); border-bottom:1px solid var(--line); }
+      .mobile-header strong { font-size:14px; }
+      .main { padding:18px 14px 80px; }
+      .mobile-tools { display:block; margin:14px 0 24px; }
+      .mobile-tools .side-search { margin-bottom:8px; }
+      .hero { min-height:330px; border-radius:24px; }
+      .stats { grid-template-columns:repeat(2, minmax(0,1fr)); }
+      .section-head { grid-template-columns:auto 1fr; }
+      .hotel-chip { grid-column:1/-1; justify-self:start; }
+      .day-toggle { grid-template-columns:1fr auto; gap:10px; padding:17px; }
+      .date-block { grid-column:1/2; }
+      .day-title { grid-column:1/2; }
+      .chevron { grid-column:2; grid-row:1/3; }
+      .day-content { padding:0 17px 17px; }
+      .timeline:before { left:92px; }
+      .timeline-row { grid-template-columns:72px 18px minmax(0,1fr); gap:8px; }
+      .fab { display:grid; place-items:center; cursor:pointer; }
+    }
+    @media (max-width: 580px) {
+      .hero { padding:26px 22px; min-height:360px; }
+      .hero h1 { font-size:42px; }
+      .stats { grid-template-columns:1fr 1fr; }
+      .stat { padding:14px; }
+      .stat b { font-size:22px; }
+      .section { margin-top:38px; }
+      .section-head h2 { font-size:32px; }
+      .country-flag { width:46px; height:46px; border-radius:15px; }
+      .timeline:before { left:80px; }
+      .timeline-row { grid-template-columns:62px 16px minmax(0,1fr); }
+      .time { font-size:11px; }
+      .activity { font-size:13px; }
+      .booking-row { grid-template-columns:64px 1fr; }
+      .booking-row .priority { grid-column:2; justify-self:start; }
+    }
+    @media print {
+      :root { --bg:#fff; --surface:#fff; --text:#111; --muted:#555; --line:#ddd; }
+      body { background:#fff; }
+      .sidebar, .mobile-header, .fab, .hero-actions, .route-strip { display:none !important; }
+      .app { display:block; }
+      .main { padding:0; }
+      .hero { min-height:auto; border-radius:0; box-shadow:none; background:#173b2e !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+      .stats { margin:14px 0 24px; }
+      .day-card { box-shadow:none; break-inside:avoid; }
+      .day-card .day-content { display:block !important; }
+      .day-card .chevron { display:none; }
+      .bookings { background:#111 !important; color:#fff !important; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">✦</div>
+        <div><strong>Europe Trip</strong><span>2026 行程浏览器</span></div>
+      </div>
+      <div class="side-search"><span>⌕</span><input id="search" type="search" placeholder="搜索景点、城市、酒店…" /></div>
+      <div class="side-title">旅程导航</div>
+      <nav id="sideNav" class="nav-list"></nav>
+      <div class="side-title">显示</div>
+      <div class="side-actions">
+        <button class="icon-btn" id="expandAll">全部展开</button>
+        <button class="icon-btn" id="collapseAll">全部收起</button>
+        <button class="icon-btn" id="themeToggle">深色模式</button>
+        <button class="icon-btn" onclick="window.print()">打印／PDF</button>
+      </div>
+      <div class="side-footer" id="countdownBox"></div>
+    </aside>
+
+    <main class="main">
+      <div class="mobile-header"><strong>✦ Europe Trip 2026</strong><button class="icon-btn" id="mobileTheme">◐</button></div>
+      <section class="hero">
+        <div class="hero-content">
+          <h1>21天，穿越欧洲五站。</h1>
+          <p>从阿姆斯特丹运河到巴黎夜景，把每天的交通、景点、住宿与天气备选整理在同一个可浏览页面。</p>
+          <div class="hero-meta">
+            <span>2026.08.09 — 08.29</span><span>荷兰 · 比利时 · 德国 · 瑞士 · 巴黎</span><span>摄影 · 建筑 · 山景 · 轻松步行</span>
+          </div>
+          <div class="hero-actions"><button class="primary" id="startBrowse">开始浏览</button><button class="secondary" onclick="window.print()">保存为 PDF</button></div>
+        </div>
+      </section>
+      <div id="stats" class="stats"></div>
+      <div class="mobile-tools"><div class="side-search"><span>⌕</span><input id="mobileSearch" type="search" placeholder="搜索景点、城市、酒店…" /></div><div class="mobile-tool-actions"><button class="icon-btn" id="mobileExpand">全部展开</button><button class="icon-btn" id="mobileCollapse">全部收起</button></div></div>
+      <div id="content"></div>
+      <div id="empty" class="empty">没有找到符合的行程。换一个关键词试试。</div>
+      <section class="bookings" id="bookings">
+        <h2>需要优先确认的预订</h2>
+        <p>把最容易售罄或影响后续衔接的项目集中在这里。</p>
+        <div class="booking-grid" id="bookingGrid"></div>
+      </section>
+    </main>
+  </div>
+  <button class="fab" id="toTop" aria-label="回到顶部">↑</button>
+<script>
+const DATA = {"title": "欧洲旅行行程｜2026", "subtitle": "荷兰 · 比利时 · 德国 · 瑞士 · 巴黎", "start": "2026-08-09", "end": "2026-08-29", "travellers": "2人行程", "countries": [{"id": "netherlands", "name": "荷兰", "flag": "🇳🇱", "date": "8月9日–12日", "hotel": "Hotel2Stay · Amsterdam", "accent": "#e84c3d", "summary": "运河街区、建筑摄影、梵高博物馆、红灯区、风车村与 Zaandam。", "days": [{"date": "8月9日 Sun", "title": "抵达 Amsterdam＋九街＋Jordaan＋运河游船", "stay": "Hotel2Stay", "route": "Schiphol Airport → Hotel2Stay → De 9 Straatjes → Jordaan → Canal Cruise → Dam Square", "items": [["13:15", "抵达 Amsterdam Schiphol Airport"], ["13:15–14:25", "入境、领取行李、整理"], ["约14:40", "Schiphol → Amsterdam Sloterdijk，NS直达火车约11分钟"], ["15:05–15:50", "Hotel2Stay Check-in、放行李、休息"], ["16:00–16:30", "Tram前往 Elandsgracht，步行进入九街"], ["16:30–17:30", "De 9 Straatjes 九街、运河街景、咖啡"], ["17:30–18:00", "沿 Prinsengracht 王子运河散步"], ["18:00–18:20", "Westerkerk 西教堂＋Anne Frank House 外观"], ["18:20–19:40", "Jordaan 约旦区晚餐、运河散步"], ["19:40–20:00", "前往游船码头"], ["20:15–21:15", "Amsterdam Canal Cruise 运河游船"], ["21:15–22:00", "Dam Square 水坝广场夜景"], ["约22:30", "回到酒店"]], "notes": ["游船建议选择 Anne Frank House／Westermarkt 附近上船点。"]}, {"date": "8月10日 Mon", "title": "博物馆区＋De Pijp＋花卉市场＋红灯区", "stay": "Hotel2Stay", "route": "Museumplein → Van Gogh Museum → Vondelpark → De Pijp → Bloemenmarkt → Dam Square → De Wallen", "items": [["08:10–08:40", "早餐、准备出门"], ["08:50–09:20", "Hotel2Stay → Rijksmuseum 附近"], ["09:20–10:10", "Rijksmuseum 外观、花园与 Museumplein 拍照"], ["10:30–12:30", "Van Gogh Museum 梵高博物馆，预约入场"], ["12:40–13:20", "Vondelpark 冯德尔公园散步"], ["13:45–14:30", "De Pijp 午餐"], ["14:30–15:30", "Albert Cuyp Market 阿尔伯特市场"], ["15:45–15:55", "Metro 52 前往 Rokin"], ["16:05–16:35", "Bloemenmarkt 花卉市场"], ["16:50–17:40", "Kalverstraat 顺路浏览"], ["17:50–18:20", "Dam Square 白天拍照"], ["18:40–20:00", "Nieuwmarkt／Zeedijk 唐人街晚餐"], ["20:15–20:30", "Oude Kerk 老教堂外观"], ["20:30–21:45", "De Wallen 红灯区步行参观"], ["约22:15", "回酒店"]], "notes": ["红灯区不要拍摄橱窗或工作人员，注意手机及钱包。"]}, {"date": "8月11日 Tue", "title": "Zaanse Schans 风车村＋Zaandam 乐高小镇", "stay": "Hotel2Stay", "route": "Sloterdijk → Zaanse Schans → Zaandam → Hotel2Stay", "items": [["07:15–07:40", "早餐、准备出门"], ["约08:00", "Sloterdijk → Zaandijk Zaanse Schans 直达火车"], ["08:15–08:35", "火车站步行至风车村"], ["08:40–09:10", "河岸、绿色木屋、风车外观，先避开人潮拍照"], ["09:10–09:50", "Kooijman 木鞋工坊"], ["09:50–10:20", "Catharina Hoeve 芝士农场"], ["10:20–11:05", "可选：进入 De Kat 猫号颜料风车"], ["11:05–11:45", "风车河岸、桥梁、传统房屋继续拍照"], ["11:45–12:10", "咖啡、小吃"], ["约12:30", "前往 Zaandam"], ["13:00–14:15", "Zaandam 午餐＋Inntel Hotels 乐高建筑拍照"], ["14:15–14:35", "Gedempte Gracht 顺路散步"], ["14:45–15:05", "Zaandam → Sloterdijk"], ["15:10–17:30", "酒店休息、整理照片"], ["晚上", "自由活动、晚餐、整理隔天行李"]]}, {"date": "8月12日 Wed", "title": "Amsterdam → Antwerp", "stay": "Ibis Budget Gent Centrum Dampoort", "route": "Hotel2Stay → Amsterdam Zuid → Antwerpen-Centraal", "items": [["06:30–07:10", "早餐、Check-out"], ["07:10–07:20", "步行至 Sloterdijk Metro"], ["约07:20–07:45", "Metro 51 前往 Amsterdam Zuid"], ["07:45–08:00", "找国际列车月台"], ["08:04–09:26", "Amsterdam Zuid → Antwerpen-Centraal，Eurocity Direct"], ["09:26", "抵达比利时，开始 Antwerp 行程"]]}]}, {"id": "belgium", "name": "比利时", "flag": "🇧🇪", "date": "8月12日–14日", "hotel": "Ibis Budget Gent Centrum Dampoort", "accent": "#d7a611", "summary": "Antwerp 半日、Ghent 夜景、Bruges 一日游、Brussels 花毯。", "days": [{"date": "8月12日 Wed", "title": "Antwerp 半日＋MAS Rooftop＋Ghent 夜景", "stay": "Ibis Budget Gent Centrum Dampoort", "route": "Antwerpen-Centraal → Grote Markt → Het Steen → MAS → Ghent 老城夜景", "items": [["09:26", "抵达 Antwerpen-Centraal"], ["09:26–09:50", "寄存大行李、整理"], ["09:50–10:10", "中央车站大厅、楼梯、圆顶、二楼视角拍照"], ["10:20–10:30", "Diamond District 钻石区快速经过"], ["10:45–11:15", "Meir 大街＋Stadsfeestzaal 建筑"], ["11:30–11:50", "Groenplaats＋Cathedral of Our Lady 外观"], ["12:00–12:30", "Grote Markt 大广场、市政厅、Brabo 雕像"], ["12:30–13:20", "老城区午餐"], ["13:25–13:40", "Vlaeykensgang 中世纪隐秘小巷"], ["13:50–14:10", "Het Steen 城堡外观"], ["14:10–14:35", "沿 Scheldt River Walk 前往 MAS"], ["14:35–15:15", "MAS Boulevard＋MAS Rooftop 城市全景"], ["15:25–15:45", "返回中央车站"], ["约16:10–17:00", "Antwerpen-Centraal → Gent-Dampoort"], ["17:10–17:50", "酒店 Check-in、休息"], ["17:50–18:30", "Portus Ganda 港湾与河景"], ["18:45–19:00", "St Bavo’s Cathedral 外观"], ["19:10–19:20", "Ghent Belfry 钟楼、市政厅外观"], ["19:30–19:45", "St Nicholas’ Church＋Korenmarkt"], ["19:50–20:15", "St Michael’s Bridge 三塔景观"], ["20:15–20:35", "Graslei & Korenlei 河岸散步"], ["20:45–21:35", "Patershol 晚餐"], ["21:45–21:55", "Gravensteen 伯爵城堡外观夜景"], ["约22:15", "回酒店"]]}, {"date": "8月13日 Thu", "title": "Bruges 布鲁日一日游", "stay": "Ibis Budget Gent Centrum Dampoort", "route": "Minnewater → Begijnhof → Bonifacius Bridge → Canal Cruise → Markt", "items": [["07:30–08:10", "早餐、步行至 Gent-Dampoort"], ["约08:25–09:05", "Gent-Dampoort → Brugge"], ["09:20–09:40", "Minnewater 爱之湖"], ["09:45–10:05", "Begijnhof 贝居安会院"], ["10:20–10:40", "Church of Our Lady 外观"], ["10:45–11:05", "Bonifacius Bridge 经典拍照点"], ["11:20–11:50", "Bruges Canal Cruise 运河船"], ["12:00–12:20", "Rozenhoedkaai 玫瑰码头"], ["12:30–13:00", "Burg Square、市政厅、圣血教堂外观"], ["13:00–14:00", "午餐"], ["14:05–14:35", "Markt 市集广场、钟楼外观、彩色行会建筑"], ["14:50–15:20", "Jan van Eyckplein 及周边运河"], ["15:20–16:20", "咖啡、巧克力、华夫饼、自由补拍"], ["16:20–16:45", "返回 Brugge Station"], ["约17:00–17:45", "Brugge → Gent-Dampoort"], ["约17:55", "回酒店，晚上轻松休息"]], "notes": ["可选 Belfry 登塔，但需爬366级楼梯，会压缩下午自由时间。"]}, {"date": "8月14日 Fri", "title": "Ghent → Brussels 花毯 → Cologne", "stay": "URBAN LOFT Cologne", "route": "Gent-Dampoort → Brussels Grand Place → Köln Hbf", "items": [["07:00–07:45", "早餐、Check-out"], ["约08:15–09:05", "Gent-Dampoort → Brussels-Midi"], ["09:05–09:25", "Brussels-Midi 寄存大行李"], ["09:25–09:35", "市区火车前往 Brussels-Central"], ["09:45–10:05", "Mont des Arts 艺术山"], ["10:15–11:05", "Grand Place 大广场＋2026 Flower Carpet 花毯"], ["11:15–11:35", "Galeries Royales Saint-Hubert 皇家拱廊"], ["11:45–12:00", "Manneken Pis 尿尿小童"], ["12:00–12:45", "午餐／华夫饼／薯条"], ["13:00–13:10", "Brussels-Central → Brussels-Midi"], ["13:10–14:00", "取行李、提前候车"], ["约14:20–16:10", "Brussels-Midi → Köln Hbf，ICE／Eurostar"], ["约16:10", "抵达科隆"]]}]}, {"id": "germany", "name": "德国", "flag": "🇩🇪", "date": "8月14日–19日", "hotel": "Cologne 1晚 · Heidelberg 1晚 · Munich 3晚", "accent": "#3d3d3d", "summary": "科隆大教堂、海德堡老城、慕尼黑、新天鹅堡，以及天气二选一的湖山日。", "days": [{"date": "8月14日 Fri", "title": "Cologne 大教堂＋莱茵河傍晚", "stay": "URBAN LOFT Cologne", "route": "Köln Hbf → Cologne Cathedral → Old Town → Hohenzollern Bridge → Rheinboulevard", "items": [["约16:10", "抵达 Köln Hbf"], ["16:10–16:40", "步行至酒店、Check-in、放行李"], ["16:40–16:55", "步行前往 Kölner Dom"], ["17:00–17:40", "科隆大教堂内部参观"], ["17:40–18:05", "Roncalliplatz 拍摄大教堂正面、侧面"], ["18:20–18:45", "Fischmarkt 彩色房屋＋Groß St. Martin 外观"], ["18:45–19:45", "科隆老城晚餐"], ["19:45–20:05", "莱茵河滨步道"], ["20:05–20:30", "Hohenzollernbrücke 霍亨索伦桥"], ["20:30–21:05", "Rheinboulevard 东岸拍大教堂、铁路桥与傍晚景色"], ["约21:30", "返回酒店"]]}, {"date": "8月15日 Sat", "title": "Cologne → Heidelberg 城堡与老城", "stay": "Premier Inn Heidelberg City Bahnstadt", "route": "Köln Hbf → Heidelberg Castle → Old Town → Alte Brücke", "items": [["07:30–08:45", "早餐、Check-out、前往 Köln Hbf"], ["建议09:15–09:45", "Köln Hbf → Heidelberg Hbf，ICE／IC约2小时"], ["约11:15–12:15", "抵达、酒店寄存行李"], ["12:15–12:40", "快速午餐"], ["13:20–13:30", "登山缆车前往 Heidelberg Castle"], ["13:30–13:55", "城堡花园、老城与内卡河观景"], ["13:55–14:10", "Altan 城堡露台"], ["14:10–14:25", "城堡庭院"], ["14:25–14:35", "海德堡大酒桶"], ["14:35–14:50", "德国药房博物馆快速参观"], ["14:50–15:05", "缆车下至 Kornmarkt"], ["15:05–15:35", "Kornmarkt＋Karlsplatz 拍城堡全景"], ["15:45–16:00", "Jesuitenkirche 耶稣会教堂"], ["16:10–16:20", "大学广场＋老大学外观"], ["16:25–17:05", "Studentenkarzer 学生监狱；没合适时段就跳过"], ["17:05–17:45", "Hauptstraße 主街＋Marktplatz 市集广场"], ["17:45–17:55", "Heiliggeistkirche 圣灵教堂外观"], ["18:05–18:15", "老桥猴雕像"], ["18:15–18:40", "Alte Brücke 海德堡老桥"], ["18:40–18:50", "Liebesstein 爱情石拍城堡"], ["19:05–20:05", "老城晚餐"], ["20:20–20:50", "返回老桥看蓝调景色"], ["约21:15", "回酒店"]]}, {"date": "8月16日 Sun", "title": "Heidelberg → Munich＋市区精华", "stay": "Bayer 89 Vi Vadi Hotel", "route": "Heidelberg → Residenz → Odeonsplatz → Marienplatz → Frauenkirche → Asamkirche", "items": [["07:45–09:00", "早餐、Check-out、前往 Heidelberg Hbf"], ["建议09:15–09:50", "Heidelberg → München Hbf，目标12:30–13:15抵达"], ["约13:15–14:00", "酒店寄存行李、快速午餐"], ["14:10–15:45", "Münchner Residenz 慕尼黑王宫博物馆"], ["15:45–16:10", "Odeonsplatz＋Feldherrnhalle＋Theatinerkirche"], ["16:10–16:25", "Hofgarten 王宫花园"], ["16:45–17:15", "Marienplatz＋新市政厅，观看17:00钟琴"], ["17:25–17:55", "Frauenkirche 慕尼黑圣母教堂"], ["18:10–18:30", "Asamkirche 阿桑教堂"], ["18:30–19:45", "慕尼黑老城晚餐"], ["19:45以后", "可选：Eisbachwelle 艾斯巴赫河冲浪点"], ["约20:30–21:00", "回酒店"]], "notes": ["若火车延误，依次删除：艾斯巴赫冲浪点 → 阿桑教堂内部 → 圣母教堂内部。"]}, {"date": "8月17日 Mon", "title": "Neuschwanstein 新天鹅堡一日游", "stay": "Bayer 89 Vi Vadi Hotel", "route": "München Hbf → Füssen → Hohenschwangau → Marienbrücke → Neuschwanstein → Alpsee", "items": [["07:45–08:30", "早餐、前往 München Hbf"], ["09:00后", "搭区域火车前往 Füssen"], ["约11:30–12:00", "抵达 Füssen"], ["12:00–12:20", "Bus 73／78 前往 Hohenschwangau"], ["12:20–13:05", "午餐、上厕所"], ["13:05–13:50", "前往 P4 站并搭接驳巴士上山"], ["14:00–14:20", "Marienbrücke 玛丽安桥经典角度"], ["14:20–14:40", "步行前往城堡入口"], ["15:00–15:30", "Schloss Neuschwanstein 内部固定导览"], ["15:30–16:20", "徒步下山"], ["16:20–16:50", "Alpsee 阿尔普湖湖边散步"], ["16:50–17:20", "返回 Füssen"], ["约17:45–18:15", "火车返回 Munich"], ["约20:00–20:30", "抵达慕尼黑、晚餐、回酒店"]], "notes": ["建议预订15:00新天鹅堡入场。当天不增加高天鹅堡内部或第二座宫殿。"]}, {"date": "8月18日 Tue", "title": "天气二选一：Tegernsee＋Wallberg／Zugspitze＋Eibsee", "stay": "Bayer 89 Vi Vadi Hotel", "route": "默认主选：Tegernsee＋Wallberg；大晴天升级：Zugspitze＋Eibsee", "variants": [{"name": "方案 A｜Tegernsee＋Wallberg（默认主选）", "items": [["09:02–10:09", "München Hbf → Tegernsee"], ["10:10–10:40", "Bus 356 前往 Wallbergbahn"], ["10:55–11:10", "搭缆车上 Wallberg"], ["11:10–11:35", "Wallbergkircherl 小教堂"], ["11:35–12:20", "山顶平台俯瞰泰根湖"], ["12:20–13:00", "山上简单午餐／咖啡"], ["13:00–13:15", "缆车下山"], ["13:15–13:45", "前往 Rottach-Egern"], ["13:45–16:00", "湖滨、码头、小镇散步、咖啡"], ["16:00–16:30", "返回 Tegernsee 镇"], ["16:30–17:20", "湖滨、修道院外观、码头"], ["17:52–18:57", "Tegernsee → München Hbf"], ["20:30–21:10", "可选：Hackerbrücke 哈克大桥蓝调夜景"]]}, {"name": "方案 B｜Zugspitze＋Eibsee（大晴天升级）", "items": [["约09:00", "München → Garmisch-Partenkirchen"], ["10:45–11:05", "步行至 Zugspitzbahnhof"], ["约11:15", "齿轨火车前往 Zugspitzplatt"], ["12:30–13:15", "冰川平台、观景、简单午餐"], ["13:15–13:25", "Gletscherbahn 上山"], ["13:25–14:30", "Zugspitze 楚格峰山顶"], ["14:30–14:45", "大缆车下至 Eibsee"], ["14:45–16:05", "Eibsee 艾布湖湖边散步"], ["16:15–16:53", "返回 Garmisch"], ["约17:10–17:40", "火车返回 Munich"], ["约18:40–19:30", "抵达慕尼黑"]]}], "notes": ["8月17日晚查看山顶 Webcam、雷雨与风速：全天清晰才执行方案B。"]}, {"date": "8月19日 Wed", "title": "Munich → Bern", "stay": "Los Lorentes Apartments Bern", "route": "München ZOB Hackerbrücke → Lindau-Reutin → Zürich HB → Bern", "items": [["06:30–07:20", "早餐、Check-out"], ["比票面早40–45分钟", "前往 München ZOB Hackerbrücke 或车票指定地点"], ["目标08:00–09:00", "官方替代巴士前往 Lindau-Reutin"], ["按车票", "Lindau-Reutin → Zürich HB"], ["按车票", "Zürich HB → Bern"], ["预计15:00–17:00", "抵达 Bern、前往酒店"]], "notes": ["因为铁路施工，务必购买 München → Bern 完整联程票，不要自行拆票。"]}]}, {"id": "switzerland", "name": "瑞士", "flag": "🇨🇭", "date": "8月19日–25日", "hotel": "Bern · Grindelwald · Interlaken · Täsch", "accent": "#e63036", "summary": "Bern 老城、Brienz Rothorn、Grindelwald First、Mürren、滑翔伞、Spiez 与 Matterhorn。", "days": [{"date": "8月19日 Wed", "title": "Bern 老城傍晚", "stay": "Los Lorentes Apartments Bern", "route": "Bundesplatz → Zytglogge → Bern Münster → BärenPark → Rosengarten", "items": [["预计15:00–17:00", "抵达 Bern、酒店入住"], ["18:00–18:20", "Bundesplatz 联邦广场、联邦宫外观"], ["18:20–18:50", "Zytglogge 时钟塔、老城拱廊"], ["18:50–19:20", "Kramgasse＋Einstein House 外观"], ["19:20–19:45", "Bern Münster 伯尔尼大教堂"], ["19:45–20:10", "BärenPark 熊苑"], ["20:10–20:55", "Rosengarten 玫瑰园俯瞰伯尔尼老城"]], "notes": ["若抵达较晚，优先保留：时钟塔 → 大教堂 → 熊苑 → 玫瑰园。"]}, {"date": "8月20日 Thu", "title": "Brienz Rothorn＋Brienz＋Grindelwald", "stay": "Elements Lodge，Grindelwald", "route": "Bern → Brienz Rothorn → Brienz 湖滨 → Grindelwald", "items": [["06:30–07:20", "早餐、退房、前往 Bern Hbf"], ["约07:30–09:10", "Bern → Interlaken Ost → Brienz"], ["09:10–09:30", "Brienz 寄存大行李、核验车票"], ["09:40–10:35", "Brienz → Rothorn Kulm 蒸汽齿轨火车"], ["10:35–12:05", "山顶观景、拍照、咖啡、短走"], ["12:20–13:30", "蒸汽火车下山"], ["13:30–14:15", "Brienz 午餐"], ["14:15–14:55", "Brienzersee 湖滨＋码头"], ["14:55–15:25", "Brunngasse 传统木屋老街"], ["15:25–17:10", "取行李，经 Interlaken Ost 前往 Grindelwald"], ["17:10–17:40", "Elements Lodge 入住"], ["17:40–18:40", "Grindelwald Grund 梦幻山坡、木屋与 Eiger 背景"], ["18:40以后", "晚餐、采购隔天徒步用品"]], "notes": ["Brienz Rothorn 建议锁定09:40上山、12:20下山＋Seat Guarantee。"]}, {"date": "8月21日 Fri", "title": "First＋Bachalpsee＋山地活动", "stay": "Elements Lodge，Grindelwald", "route": "Firstbahn → First Cliff Walk → Bachalpsee → Pfingstegg", "items": [["07:20–08:15", "早餐、前往 Firstbahn"], ["08:30–08:55", "Grindelwald → First 缆车"], ["08:55–09:15", "First View 观景平台"], ["09:15–09:40", "First Cliff Walk 悬崖步道"], ["09:40–10:40", "徒步 First → Bachalpsee"], ["10:40–11:20", "Bachalpsee 拍照、休息"], ["11:20–12:20", "徒步返回 First"], ["12:20–12:50", "简单午餐"], ["12:50–13:05", "查看各项活动排队时间"], ["13:05–14:10", "现场选 First Flyer／Glider／Mountain Cart；Mountain Cart优先"], ["14:10–14:40", "可选：Trottibike；路面湿滑则取消"], ["最迟14:40", "离开 First 区域，保护后面的 Pfingstegg 时间"], ["14:40–15:05", "前往 Pfingsteggbahn"], ["15:10–15:50", "Pfingstegg Toboggan 夏季滑道"], ["15:50–16:30", "Pfingstegg 观景＋咖啡"], ["16:30以后", "下山、晚餐、回酒店"]], "notes": ["删减顺序：Trottibike → First付费项目 → 缩短Pfingstegg观景。"]}, {"date": "8月22日 Sat", "title": "Lauterbrunnen＋Mürren＋Allmendhubel", "stay": "The Guesthouse，Interlaken", "route": "Lauterbrunnen → Stechelberg → Mürren → Allmendhubel → Interlaken", "items": [["07:30–09:25", "早餐、退房、前往 Lauterbrunnen，寄存大行李"], ["09:25–09:50", "Lauterbrunnen Church＋河边拍照机位"], ["09:50–10:20", "Staubbachfall 瀑布＋村内散步"], ["10:35–11:00", "Bus 前往 Stechelberg"], ["11:00–11:30", "缆车经 Gimmelwald 前往 Mürren"], ["11:30–12:00", "穿过 Mürren 前往 Allmendhubelbahn"], ["12:00–13:20", "Allmendhubel 观景、午餐、Flower Trail"], ["13:20–15:10", "Mürren 无车山村、木屋、咖啡、拍照"], ["15:20–16:00", "Mürren → Winteregg → Grütschalp → Lauterbrunnen"], ["16:00–17:20", "取行李，前往 Interlaken West"], ["17:20–17:50", "The Guesthouse 入住"], ["18:00–19:45", "Unterseen＋Aare河＋Höheweg／Höhematte 散步"]], "notes": ["Trümmelbach Falls 已从最终主线删除。"]}, {"date": "8月23日 Sun", "title": "Interlaken 滑翔伞＋Spiez＋Zermatt", "stay": "Hotel Matterhorn Inn，Täsch", "route": "Interlaken Paragliding → Spiez Castle → Täsch → Zermatt", "items": [["06:50–07:40", "早餐、退房、寄存大行李"], ["08:10–08:50", "滑翔伞集合，接送至 Beatenberg"], ["08:50–09:15", "Interlaken 双人滑翔伞，降落 Höhematte"], ["09:15–10:45", "看照片、取行李、早午餐"], ["11:00–11:40", "Interlaken West → Spiez，寄存行李"], ["11:40–12:05", "葡萄园步道下行"], ["12:05–13:00", "Spiez Castle 城堡、教堂、花园"], ["13:00–13:30", "Spiez Bay 图恩湖湖湾"], ["13:30–14:00", "返回车站、取行李"], ["约14:00–15:50", "Spiez → Visp → Täsch"], ["15:50–16:30", "Hotel Matterhorn Inn 入住，接驳火车进 Zermatt"], ["16:30–18:25", "Bahnhofstrasse → Hinterdorf → 教堂 → Kirchbrücke"], ["晚上", "Zermatt 晚餐后返回 Täsch"]], "notes": ["滑翔伞若延误30–45分钟，Spiez缩短为城堡外观、花园和湖湾。"]}, {"date": "8月24日 Mon", "title": "Gornergrat＋Riffelsee", "stay": "Hotel Matterhorn Inn，Täsch", "route": "Täsch → Zermatt → Gornergrat → Rotenboden → Riffelsee", "items": [["05:50–06:50", "早餐盒、Täsch → Zermatt"], ["约07:00–07:35", "早班登山火车前往 Gornergrat"], ["07:35–08:35", "Gornergrat 观景台：Matterhorn、冰川、群峰"], ["08:35–09:15", "Gornergrat → Rotenboden → Riffelsee"], ["09:15–10:00", "Riffelsee 拍 Matterhorn 倒影"], ["10:00–11:00", "可选：Riffelsee → Riffelberg 一小时山间步道"], ["11:00–12:45", "Riffelberg 午餐＋返回 Zermatt"], ["13:00–15:30", "Zermatt 自由活动、咖啡、补拍"], ["15:30以后", "返回 Täsch、休息、晚餐"]], "notes": ["前一晚查看 Webcam；若清晨多云但预计转晴，可以延后上山。"]}, {"date": "8月25日 Tue", "title": "Täsch → Lausanne → Paris", "stay": "TRIBE Paris Saint-Ouen", "route": "Täsch → Visp → Lausanne → Paris Gare de Lyon", "items": [["07:00–07:40", "早餐"], ["07:40–08:00", "退房、检查行李"], ["08:21–09:19", "Täsch → Visp"], ["09:19–09:36", "Visp 换乘"], ["09:36–11:12", "Visp → Lausanne，IR90直达"], ["11:12–12:00", "Lausanne 站内午餐、上厕所"], ["12:00–12:10", "提前到 TGV 月台"], ["12:19–16:04", "Lausanne → Paris Gare de Lyon，TGV Lyria 9268"]]}]}, {"id": "paris", "name": "巴黎", "flag": "🇫🇷", "date": "8月25日–29日", "hotel": "TRIBE Paris Saint-Ouen", "accent": "#2d5aa6", "summary": "塞纳河、埃菲尔铁塔、Disneyland Park、卢浮宫外观、蒙马特与凯旋门。", "days": [{"date": "8月25日 Tue", "title": "抵达巴黎＋第一晚散步", "stay": "TRIBE Paris Saint-Ouen", "route": "Gare de Lyon → Hôtel de Ville → Notre-Dame → Île Saint-Louis", "items": [["16:04", "抵达 Paris Gare de Lyon"], ["16:25–16:45", "Metro 14 直达 Mairie de Saint-Ouen"], ["16:45–16:50", "步行至酒店"], ["16:50–18:10", "Check-in、洗澡、休息"], ["18:30–18:50", "Metro 14 前往 Châtelet"], ["19:00–19:20", "Hôtel de Ville 巴黎市政厅外观"], ["19:20–19:30", "经 Pont d’Arcole 进入西岱岛"], ["19:30–20:00", "Notre-Dame 巴黎圣母院外观、河岸"], ["20:00–20:10", "前往 Île Saint-Louis"], ["20:10–21:10", "圣路易岛晚餐"], ["21:10–21:40", "Quai d’Orléans／Quai de la Tournelle 塞纳河散步"], ["约22:20", "回酒店"]]}, {"date": "8月26日 Wed", "title": "埃菲尔铁塔摄影＋塞纳河游船＋闪灯", "stay": "TRIBE Paris Saint-Ouen", "route": "Trocadéro → Bir-Hakeim → Eiffel Tower → Invalides → Seine Cruise", "items": [["07:30–08:00", "早餐"], ["08:00–08:40", "前往 Trocadéro"], ["08:40–09:25", "Trocadéro 拍埃菲尔铁塔全景"], ["09:35–09:55", "Avenue de Camoëns 阶梯摄影点"], ["10:10–10:45", "Pont de Bir-Hakeim 桥柱廊、铁塔与塞纳河"], ["10:45–11:10", "沿河走向埃菲尔铁塔"], ["11:10–11:50", "Eiffel Tower 底部＋Champ de Mars；暂定不登塔"], ["11:50–12:20", "Rue de l’Université 经典机位"], ["12:35–13:35", "Rue Cler 附近午餐"], ["13:50–14:20", "Invalides 荣军院外观"], ["14:30–15:05", "Pont Alexandre III 亚历山大三世桥"], ["15:05–15:45", "返回酒店"], ["15:45–17:30", "酒店休息、充电、换衣服"], ["17:30–18:15", "返回埃菲尔铁塔区域"], ["18:15–19:15", "提早晚餐"], ["19:30–20:30", "塞纳河观光游船"], ["20:30–21:00", "步行返回 Trocadéro"], ["21:00–22:05", "Trocadéro 蓝调、铁塔闪灯"], ["约22:50", "回酒店"]]}, {"date": "8月27日 Thu", "title": "Disneyland Park 单园一日游", "stay": "TRIBE Paris Saint-Ouen", "route": "Gare de Lyon → Marne-la-Vallée–Chessy → Disneyland Park", "items": [["06:30–07:00", "起床、早餐"], ["07:10–07:30", "Metro 14 前往 Gare de Lyon"], ["07:30–08:15", "RER A 前往 Marne-la-Vallée–Chessy"], ["08:15–开园", "安检、入口排队"], ["开园后第一站", "Big Thunder Mountain"], ["随后", "Phantom Manor"], ["随后", "Pirates of the Caribbean"], ["12:00–13:00", "提早午餐"], ["下午", "Sleeping Beauty Castle＋地下巨龙"], ["下午", "Peter Pan’s Flight"], ["下午", "it’s a small world"], ["下午", "Alice’s Curious Labyrinth"], ["下午", "Buzz Lightyear Laser Blast"], ["下午", "Star Tours"], ["可选", "Hyperspace Mountain／Orbitron"], ["官方指定时间", "Disney 巡游"], ["17:00–18:30", "补玩排队较短项目、休息"], ["18:30–19:30", "提早晚餐"], ["晚上", "Main Street、城堡夜景"], ["闭园前", "城堡夜间秀"], ["夜间秀后", "RER A＋Metro 14 返回酒店"], ["约23:30–00:15", "抵达酒店"]], "notes": ["只去经典 Disneyland Park，不去第二园区。"]}, {"date": "8月28日 Fri", "title": "卢浮宫＋巴黎圣母院＋蒙马特＋凯旋门", "stay": "TRIBE Paris Saint-Ouen", "route": "Louvre → Palais Royal → Sainte-Chapelle → Montmartre → Arc de Triomphe", "items": [["07:45–08:20", "早餐"], ["08:30–09:00", "Metro 14 前往 Pyramides"], ["09:10–09:50", "Louvre 金字塔、Cour Napoléon、Cour Carrée 外观"], ["10:00–10:35", "Palais Royal 黑白柱＋花园"], ["10:45–11:10", "Jardin des Tuileries 杜乐丽花园"], ["11:40–12:30", "Sainte-Chapelle 圣礼拜堂，预约入场"], ["12:40–13:25", "Notre-Dame 内部与外观"], ["13:25–14:30", "拉丁区午餐＋Shakespeare and Company 周边"], ["14:30–15:15", "前往 Montmartre"], ["15:25–16:15", "Sacré-Cœur 圣心堂＋巴黎全景"], ["16:15–16:45", "Place du Tertre 小丘广场"], ["16:45–17:30", "蒙马特街巷、Rue Lepic 方向下坡"], ["17:30–17:50", "可选：Abbesses＋爱墙"], ["18:05–18:20", "可选：Moulin Rouge 红磨坊外观"], ["18:20–19:40", "Montmartre／Pigalle 附近晚餐"], ["19:40–20:05", "Metro 2 前往 Charles de Gaulle–Étoile"], ["20:05–20:30", "Arc de Triomphe 凯旋门外观、雕塑、无名烈士墓"], ["20:30–20:50", "安检、登顶"], ["20:50–21:55", "凯旋门观景台：日落、蓝调、巴黎夜景"], ["21:55–22:10", "下楼、拍凯旋门夜景"], ["约22:45", "回酒店"]]}, {"date": "8月29日 Sat", "title": "Paris CDG → 吉隆坡", "stay": "航班", "route": "TRIBE Paris Saint-Ouen → Paris CDG → Kuala Lumpur", "items": [["07:45–08:30", "早餐"], ["08:30–09:30", "收拾行李、检查护照和退税文件"], ["09:30–10:00", "Check-out 准备"], ["10:15–10:30", "Taxi／Private Transfer 从酒店出发"], ["约11:15–11:45", "抵达 Paris CDG"], ["11:45以后", "托运、退税、安检、出境"], ["15:35", "Emirates 航班起飞，返回吉隆坡"]]}]}], "bookings": [["8/12", "Amsterdam Zuid → Antwerp 国际火车", "高"], ["8/14", "Brussels → Cologne 国际火车", "高"], ["8/17", "新天鹅堡 15:00 入场", "高"], ["8/19", "Munich → Bern 完整联程票", "高"], ["8/20", "Brienz Rothorn 09:40上山＋12:20下山＋Seat Guarantee", "高"], ["8/23", "Interlaken 滑翔伞 08:10", "中"], ["8/25", "TGV Lyria 9268，12:19 Lausanne出发", "高"], ["8/27", "Disneyland Park 指定日期单园票", "高"], ["8/26、8/28", "塞纳河游船、Sainte-Chapelle、凯旋门登顶", "中"]]};
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+
+function escapeHTML(str='') { return String(str).replace(/[&<>'"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m])); }
+function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]+/g,'-'); }
+
+function allDays() { return DATA.countries.flatMap(c => c.days.map(d => ({...d, country:c.name}))); }
+function countActivities() {
+  return allDays().reduce((sum,d)=>sum+(d.items?.length||0)+(d.variants?.reduce((s,v)=>s+v.items.length,0)||0),0);
+}
+function renderStats() {
+  const entries = [
+    [new Set(allDays().map(d=>d.date.split(' ')[0])).size, '行程日'],
+    [DATA.countries.length, '国家／地区'],
+    [countActivities(), '时间节点'],
+    ['20晚', '总住宿']
+  ];
+  $('#stats').innerHTML = entries.map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+}
+function renderNav() {
+  $('#sideNav').innerHTML = DATA.countries.map(c=>`<button class="nav-item" data-target="${c.id}"><span class="flag">${c.flag}</span><span><b>${c.name}</b><small>${c.date}</small></span></button>`).join('') + `<button class="nav-item" data-target="bookings"><span class="flag">🎟️</span><span><b>预订清单</b><small>优先确认</small></span></button>`;
+}
+function timeline(items, accent) {
+  return `<div class="timeline" style="--country-accent:${accent}">${items.map(([t,a])=>`<div class="timeline-row"><div class="time">${escapeHTML(t)}</div><div class="dot"></div><div class="activity">${escapeHTML(a)}</div></div>`).join('')}</div>`;
+}
+function renderDay(day, country, index) {
+  const id = `${country.id}-${index}`;
+  const variants = day.variants ? day.variants.map(v=>`<div class="variant"><h4>${escapeHTML(v.name)}</h4>${timeline(v.items, country.accent)}</div>`).join('') : '';
+  const notes = day.notes?.length ? `<div class="notes">${day.notes.map(n=>`<div class="note">💡 ${escapeHTML(n)}</div>`).join('')}</div>` : '';
+  return `<article class="day-card ${index===0?'open':''}" data-search="${escapeHTML([country.name,day.date,day.title,day.stay,day.route,JSON.stringify(day.items||[]),JSON.stringify(day.variants||[]),JSON.stringify(day.notes||[])].join(' ').toLowerCase())}" id="${id}">
+    <button class="day-toggle" aria-expanded="${index===0}">
+      <div class="date-block"><b>${escapeHTML(day.date)}</b><small>住宿：${escapeHTML(day.stay)}</small></div>
+      <div class="day-title"><h3>${escapeHTML(day.title)}</h3><p>${escapeHTML(day.route)}</p></div>
+      <div class="chevron">⌄</div>
+    </button>
+    <div class="day-content">${day.items ? timeline(day.items, country.accent) : ''}${variants}${notes}</div>
+  </article>`;
+}
+function renderContent() {
+  $('#content').innerHTML = DATA.countries.map(country=>`<section class="section" id="${country.id}" style="--country-accent:${country.accent}">
+    <div class="section-head">
+      <div class="country-flag">${country.flag}</div>
+      <div><h2>${country.name}</h2><p><strong>${country.date}</strong> · ${escapeHTML(country.summary)}</p></div>
+      <div class="hotel-chip">🏨 ${escapeHTML(country.hotel)}</div>
+    </div>
+    <div class="route-strip">${country.days.map((d,i)=>`<button data-day="${country.id}-${i}">${escapeHTML(d.date.replace(/\s[A-Za-z]+$/,''))}</button>`).join('')}</div>
+    <div class="day-list">${country.days.map((d,i)=>renderDay(d,country,i)).join('')}</div>
+  </section>`).join('');
+}
+function renderBookings() {
+  $('#bookingGrid').innerHTML = DATA.bookings.map(([date,item,p])=>`<div class="booking-row"><b>${date}</b><span>${escapeHTML(item)}</span><span class="priority">${p}优先</span></div>`).join('');
+}
+function setOpen(card, open) {
+  card.classList.toggle('open', open);
+  $('.day-toggle', card).setAttribute('aria-expanded', String(open));
+}
+function bind() {
+  $$('.day-toggle').forEach(btn=>btn.addEventListener('click',()=>setOpen(btn.closest('.day-card'), !btn.closest('.day-card').classList.contains('open'))));
+  $$('.route-strip button').forEach(btn=>btn.addEventListener('click',()=>{
+    const card = document.getElementById(btn.dataset.day); setOpen(card,true); card.scrollIntoView({behavior:'smooth', block:'center'});
+  }));
+  $$('.nav-item').forEach(btn=>btn.addEventListener('click',()=>document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth'})));
+  $('#expandAll').addEventListener('click',()=>$$('.day-card:not([hidden])').forEach(c=>setOpen(c,true)));
+  $('#collapseAll').addEventListener('click',()=>$$('.day-card').forEach(c=>setOpen(c,false)));
+  $('#startBrowse').addEventListener('click',()=>document.getElementById(DATA.countries[0].id).scrollIntoView({behavior:'smooth'}));
+  $('#toTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  $('#search').addEventListener('input', e=>{ $('#mobileSearch').value=e.target.value; filter(e.target.value); });
+  $('#mobileSearch').addEventListener('input', e=>{ $('#search').value=e.target.value; filter(e.target.value); });
+  $('#mobileExpand').addEventListener('click',()=>$$('.day-card:not([hidden])').forEach(c=>setOpen(c,true)));
+  $('#mobileCollapse').addEventListener('click',()=>$$('.day-card').forEach(c=>setOpen(c,false)));
+  $('#themeToggle').addEventListener('click', toggleTheme);
+  $('#mobileTheme').addEventListener('click', toggleTheme);
+  window.addEventListener('scroll', updateActiveNav, {passive:true});
+}
+function filter(q) {
+  const term = q.trim().toLowerCase(); let visible = 0;
+  $$('.day-card').forEach(card=>{
+    const match = !term || card.dataset.search.includes(term);
+    card.hidden = !match; if(match){ visible++; if(term) setOpen(card,true); }
+  });
+  $$('.section').forEach(sec=>{ sec.style.display = $$('.day-card:not([hidden])', sec).length ? '' : 'none'; });
+  $('#empty').classList.toggle('show', visible===0);
+}
+function toggleTheme() {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('trip-theme', next);
+  $('#themeToggle').textContent = next==='dark' ? '浅色模式' : '深色模式';
+}
+function initTheme() {
+  const saved = localStorage.getItem('trip-theme');
+  if(saved) document.documentElement.dataset.theme = saved;
+  $('#themeToggle').textContent = document.documentElement.dataset.theme==='dark' ? '浅色模式' : '深色模式';
+}
+function updateActiveNav() {
+  const candidates = [...DATA.countries.map(c=>document.getElementById(c.id)), document.getElementById('bookings')];
+  let active = candidates[0];
+  candidates.forEach(el=>{ if(el.getBoundingClientRect().top < 180) active = el; });
+  $$('.nav-item').forEach(b=>b.classList.toggle('active', b.dataset.target===active.id));
+}
+function countdown() {
+  const start = new Date(DATA.start+'T00:00:00'); const end = new Date(DATA.end+'T23:59:59'); const now = new Date();
+  let html;
+  if(now < start) { const days=Math.ceil((start-now)/86400000); html=`<b>距离出发还有 ${days} 天</b><br>2026年8月9日开始这趟旅程。`; }
+  else if(now <= end) { const day=Math.floor((now-start)/86400000)+1; html=`<b>旅程进行中 · Day ${day}</b><br>今天也记得检查交通与天气。`; }
+  else { html=`<b>旅程已完成</b><br>这份页面仍可作为旅行记录浏览。`; }
+  $('#countdownBox').innerHTML = html;
+}
+renderStats(); renderNav(); renderContent(); renderBookings(); initTheme(); bind(); countdown(); updateActiveNav();
+</script>
+</body>
+</html>
