@@ -105,6 +105,21 @@
     .hotel-chip { align-self:start; padding:9px 12px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:12px; background:var(--surface); }
     .route-strip { display:flex; gap:8px; overflow:auto; padding:2px 0 13px; scrollbar-width:thin; }
     .route-strip button { flex:0 0 auto; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:9px 12px; cursor:pointer; font-size:12px; }
+    .map-links { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:4px 0 16px; }
+    .map-links > span { color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.09em; }
+    .map-link { padding:7px 10px; border:1px solid var(--line); border-radius:999px; background:var(--surface-solid); font-size:12px; text-decoration:none; }
+    .map-link:hover { border-color:var(--accent); color:var(--accent); }
+    .weather-panel { margin:4px 0 16px; }
+    .weather-head { display:flex; justify-content:space-between; gap:12px; align-items:baseline; margin-bottom:9px; }
+    .weather-head b { font-size:12px; }
+    .weather-head small { color:var(--muted); font-size:10px; }
+    .weather-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:8px; }
+    .weather-card { min-width:0; padding:13px 14px; border:1px solid var(--line); border-radius:15px; background:var(--surface-solid); }
+    .weather-place { margin-bottom:8px; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.06em; }
+    .weather-main { display:flex; align-items:center; gap:10px; }
+    .weather-icon { flex:0 0 auto; font-size:25px; line-height:1; }
+    .weather-main strong { display:block; font-size:13px; }
+    .weather-main small { display:block; margin-top:4px; color:var(--muted); font-size:11px; line-height:1.4; }
     .day-list { display:flex; flex-direction:column; gap:14px; }
     .day-card { border:1px solid var(--line); background:var(--surface); border-radius:var(--radius-lg); overflow:hidden; box-shadow:0 12px 38px rgba(18,42,31,.045); transition:.25s; }
     .day-card:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
@@ -300,6 +315,72 @@ const $$ = (s, root=document) => [...root.querySelectorAll(s)];
 
 function escapeHTML(str='') { return String(str).replace(/[&<>'"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m])); }
 function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]+/g,'-'); }
+const WEATHER_LOCATIONS = Object.freeze({
+  amsterdam:{name:'阿姆斯特丹',lat:52.3676,lon:4.9041}, zaandam:{name:'赞丹',lat:52.4385,lon:4.8264},
+  antwerp:{name:'安特卫普',lat:51.2194,lon:4.4025}, ghent:{name:'根特',lat:51.0543,lon:3.7174}, bruges:{name:'布鲁日',lat:51.2093,lon:3.2247}, brussels:{name:'布鲁塞尔',lat:50.8503,lon:4.3517},
+  cologne:{name:'科隆',lat:50.9375,lon:6.9603}, heidelberg:{name:'海德堡',lat:49.3988,lon:8.6724}, munich:{name:'慕尼黑',lat:48.1351,lon:11.5820}, fussen:{name:'菲森',lat:47.5696,lon:10.7004}, tegernsee:{name:'泰根湖',lat:47.7123,lon:11.7582}, zugspitze:{name:'楚格峰',lat:47.4210,lon:10.9853},
+  bern:{name:'伯尔尼',lat:46.9480,lon:7.4474}, brienz:{name:'布里恩茨',lat:46.7540,lon:8.0387}, grindelwald:{name:'格林德瓦',lat:46.6242,lon:8.0414}, lauterbrunnen:{name:'劳特布龙嫩',lat:46.5935,lon:7.9091}, murren:{name:'米伦',lat:46.5594,lon:7.8927}, interlaken:{name:'因特拉肯',lat:46.6863,lon:7.8632}, spiez:{name:'施皮茨',lat:46.6849,lon:7.6756}, tasch:{name:'Täsch',lat:46.0665,lon:7.7780}, zermatt:{name:'采尔马特',lat:46.0207,lon:7.7491}, lausanne:{name:'洛桑',lat:46.5197,lon:6.6323},
+  paris:{name:'巴黎',lat:48.8566,lon:2.3522}, disneyland:{name:'巴黎迪士尼',lat:48.8674,lon:2.7836}
+});
+const WEATHER_BY_DAY = Object.freeze({
+  'netherlands-0':['amsterdam'], 'netherlands-1':['amsterdam'], 'netherlands-2':['zaandam'], 'netherlands-3':['amsterdam','antwerp'],
+  'belgium-0':['antwerp','ghent'], 'belgium-1':['bruges'], 'belgium-2':['ghent','brussels','cologne'],
+  'germany-0':['cologne'], 'germany-1':['cologne','heidelberg'], 'germany-2':['heidelberg','munich'], 'germany-3':['fussen'], 'germany-4':['tegernsee','zugspitze'], 'germany-5':['munich','bern'],
+  'switzerland-0':['bern'], 'switzerland-1':['bern','brienz','grindelwald'], 'switzerland-2':['grindelwald'], 'switzerland-3':['lauterbrunnen','murren','interlaken'], 'switzerland-4':['interlaken','spiez','zermatt'], 'switzerland-5':['tasch','zermatt'], 'switzerland-6':['tasch','lausanne','paris'],
+  'paris-0':['paris'], 'paris-1':['paris'], 'paris-2':['disneyland'], 'paris-3':['paris'], 'paris-4':['paris']
+});
+function tripISODate(day) {
+  const match = day.date.match(/(\d+)月(\d+)日/);
+  return match ? `${DATA.start.slice(0,4)}-${match[1].padStart(2,'0')}-${match[2].padStart(2,'0')}` : '';
+}
+function wmoWeather(code) {
+  if(code === 0) return {icon:'☀️',label:'晴'};
+  if([1,2].includes(code)) return {icon:'🌤️',label:'晴间多云'};
+  if(code === 3) return {icon:'☁️',label:'阴'};
+  if([45,48].includes(code)) return {icon:'🌫️',label:'雾'};
+  if([51,53,55,56,57].includes(code)) return {icon:'🌦️',label:'毛毛雨'};
+  if([61,63,65,66,67,80,81,82].includes(code)) return {icon:'🌧️',label:'雨'};
+  if([71,73,75,77,85,86].includes(code)) return {icon:'🌨️',label:'雪'};
+  if([95,96,99].includes(code)) return {icon:'⛈️',label:'雷雨'};
+  return {icon:'🌡️',label:'天气变化'};
+}
+function forecastForDate(payload, date) {
+  const index = payload?.daily?.time?.indexOf(date) ?? -1;
+  if(index < 0) return null;
+  return {code:payload.daily.weather_code[index], max:payload.daily.temperature_2m_max[index], min:payload.daily.temperature_2m_min[index], rain:payload.daily.precipitation_probability_max[index]};
+}
+function renderWeather(day, country, index) {
+  const date = tripISODate(day);
+  const cards = (WEATHER_BY_DAY[`${country.id}-${index}`] || []).map(key=>`<div class="weather-card" data-weather-location="${key}" data-weather-date="${date}" aria-live="polite"><div class="weather-place">${WEATHER_LOCATIONS[key].name}</div><div class="weather-main"><span class="weather-icon">↻</span><div><strong>正在获取最新天气</strong><small>连接 Open-Meteo</small></div></div></div>`).join('');
+  return cards ? `<div class="weather-panel" aria-label="城市天气预报"><div class="weather-head"><b>城市天气</b><small>真实预报 · 打开页面自动更新</small></div><div class="weather-grid">${cards}</div></div>` : '';
+}
+function updateWeatherCard(card, forecast, failed=false) {
+  if(failed) { card.querySelector('.weather-main').innerHTML = '<span class="weather-icon">⚠️</span><div><strong>天气暂时无法更新</strong><small>请检查网络后重新打开页面</small></div>'; return; }
+  if(!forecast) { card.querySelector('.weather-main').innerHTML = '<span class="weather-icon">⏳</span><div><strong>等待最新预报</strong><small>进入 16 天预报范围后自动更新</small></div>'; return; }
+  const weather = wmoWeather(forecast.code);
+  card.querySelector('.weather-main').innerHTML = `<span class="weather-icon">${weather.icon}</span><div><strong>${weather.label}</strong><small>最高 ${Math.round(forecast.max)}° · 最低 ${Math.round(forecast.min)}° · 降雨 ${Math.round(forecast.rain ?? 0)}%</small></div>`;
+}
+async function loadWeather() {
+  const entries = Object.entries(WEATHER_LOCATIONS);
+  const query = new URLSearchParams({latitude:entries.map(([,v])=>v.lat).join(','), longitude:entries.map(([,v])=>v.lon).join(','), daily:'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max', forecast_days:'16', timezone:'auto'});
+  try {
+    const response = await fetch(`https://api.open-meteo.com/v1/forecast?${query}`);
+    if(!response.ok) throw new Error(`Weather request failed: ${response.status}`);
+    const data = await response.json();
+    const forecasts = Array.isArray(data) ? data : [data];
+    if(forecasts.length !== entries.length) throw new Error('Weather response count mismatch');
+    const byLocation = Object.fromEntries(entries.map(([key],i)=>[key,forecasts[i]]));
+    $$('[data-weather-location]').forEach(card=>updateWeatherCard(card, forecastForDate(byLocation[card.dataset.weatherLocation], card.dataset.weatherDate)));
+  } catch(error) {
+    console.warn('Weather update unavailable', error);
+    $$('[data-weather-location]').forEach(card=>updateWeatherCard(card, null, true));
+  }
+}
+function mapLinks(route, context) {
+  if(!route.includes('→')) return '';
+  const stops = route.split('→').map(stop=>stop.trim()).filter(Boolean);
+  return `<div class="map-links" aria-label="Google Maps 地点"><span>Google Maps</span>${stops.map(stop=>`<a class="map-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${stop} ${context}`)}" target="_blank" rel="noopener noreferrer">📍 ${escapeHTML(stop)}</a>`).join('')}</div>`;
+}
 
 function allDays() { return DATA.countries.flatMap(c => c.days.map(d => ({...d, country:c.name}))); }
 function countActivities() {
@@ -323,6 +404,8 @@ function timeline(items, accent) {
 }
 function renderDay(day, country, index) {
   const id = `${country.id}-${index}`;
+  const weather = renderWeather(day, country, index);
+  const maps = mapLinks(day.route, country.name);
   const variants = day.variants ? day.variants.map(v=>`<div class="variant"><h4>${escapeHTML(v.name)}</h4>${timeline(v.items, country.accent)}</div>`).join('') : '';
   const notes = day.notes?.length ? `<div class="notes">${day.notes.map(n=>`<div class="note">💡 ${escapeHTML(n)}</div>`).join('')}</div>` : '';
   return `<article class="day-card ${index===0?'open':''}" data-search="${escapeHTML([country.name,day.date,day.title,day.stay,day.route,JSON.stringify(day.items||[]),JSON.stringify(day.variants||[]),JSON.stringify(day.notes||[])].join(' ').toLowerCase())}" id="${id}">
@@ -331,7 +414,7 @@ function renderDay(day, country, index) {
       <div class="day-title"><h3>${escapeHTML(day.title)}</h3><p>${escapeHTML(day.route)}</p></div>
       <div class="chevron">⌄</div>
     </button>
-    <div class="day-content">${day.items ? timeline(day.items, country.accent) : ''}${variants}${notes}</div>
+    <div class="day-content">${weather}${maps}${day.items ? timeline(day.items, country.accent) : ''}${variants}${notes}</div>
   </article>`;
 }
 function renderContent() {
@@ -428,7 +511,7 @@ function countdown() {
   else { html=`<b>旅程已完成</b><br>这份页面仍可作为旅行记录浏览。`; }
   $('#countdownBox').innerHTML = html;
 }
-renderStats(); renderNav(); renderContent(); initTheme(); calculateFx(); bind(); countdown(); updateActiveNav();
+renderStats(); renderNav(); renderContent(); initTheme(); calculateFx(); bind(); countdown(); updateActiveNav(); loadWeather();
 </script>
 </body>
 </html>
